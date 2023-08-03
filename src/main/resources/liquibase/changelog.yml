@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Dmitry Ghoncharko
+      changes:
+        - sql:
+            dbms: postgresql
+            endDelimiter: ;
+            splitStatements: true
+            sql: |
+              create table interview.question_type
+              (
+                  question_type_id   bigserial
+                      primary key,
+                  question_type_name varchar(1000) not null
+                      unique
+              );
+
+              alter table interview.question_type
+                  owner to interview;
+
+              create table interview.question
+              (
+                  question_id      bigserial
+                      primary key,
+                  question_body    varchar(5000) not null
+                      unique,
+                  question_type_id bigint        not null
+                      constraint question_question_type_question_type_id_fk
+                          references interview.question_type
+              );
+
+              alter table interview.question
+                  owner to interview;
+
+              create table interview.answer
+              (
+                  answer_id      bigserial
+                      primary key,
+                  answer_body    varchar(3000) not null,
+                  answer_correct boolean       not null,
+                  question_id    bigint        not null
+                      constraint answer_question_question_id_fk
+                          references interview.question
+              );
+
+              alter table interview.answer
+                  owner to interview;
+        - sqlFile:
+            dbms: postgresql
+            splitStatements: true
+            endDelimiter: ;
+            path: classpath:liquibase/insert/insert_data.sql
