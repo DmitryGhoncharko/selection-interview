@@ -33,6 +33,7 @@ public class Question {
     @Column(name = "question_body",nullable = false,length = 5000, unique = true)
     private String questionBody;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_type_id")
     @ToString.Exclude
     private QuestionType questionType;
     @OneToMany
