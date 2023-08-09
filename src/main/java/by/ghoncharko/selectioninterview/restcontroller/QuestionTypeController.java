@@ -3,11 +3,12 @@ package by.ghoncharko.selectioninterview.restcontroller;
 import by.ghoncharko.selectioninterview.dto.QuestionTypeDTO;
 import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOWithoutQuestions;
 import by.ghoncharko.selectioninterview.service.QuestionTypeService;
+import by.ghoncharko.selectioninterview.validation.group.UpdateValidationGroup;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import java.util.List;
 @RequestMapping("api/v1/question_type")
 @RequiredArgsConstructor
 public class QuestionTypeController {
-    @Autowired
+
     private final QuestionTypeService questionTypeService;
 
     @GetMapping("/all/lazy/{page}")
@@ -77,12 +78,12 @@ public class QuestionTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<QuestionTypeDTO> createQuestionType(@RequestBody QuestionTypeDTO questionTypeDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(questionTypeService.save(questionTypeDTO));
+    public ResponseEntity<QuestionTypeDTO> createQuestionType(@RequestBody @Validated QuestionTypeDTO questionTypeDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionTypeService.create(questionTypeDTO));
     }
 
     @PutMapping
-    public ResponseEntity<QuestionTypeDTO> updateQuestionType(@RequestBody QuestionTypeDTO questionTypeDTO) {
-        return ResponseEntity.ok(questionTypeService.save(questionTypeDTO));
+    public ResponseEntity<QuestionTypeDTO> updateQuestionType(@RequestBody @Validated(UpdateValidationGroup.class) QuestionTypeDTO questionTypeDTO) {
+        return ResponseEntity.ok(questionTypeService.update(questionTypeDTO));
     }
 }

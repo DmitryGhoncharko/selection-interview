@@ -3,6 +3,8 @@ package by.ghoncharko.selectioninterview.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +22,11 @@ import java.util.Objects;
 @Builder
 @ToString
 public class QuestionDTOWithoutAnswersAndType {
-    @NotNull
+    @NotNull(message = "id must be not null")
+    @Positive(message = "id must be more than zero")
     private BigInteger id;
-    @NotEmpty
+    @NotEmpty(message = "question body must be not empty")
+    @Size(max = 5000,message = "question body max size = 5000")
     private String questionBody;
 
     @Override

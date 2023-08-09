@@ -2,6 +2,8 @@ package by.ghoncharko.selectioninterview.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,9 +20,11 @@ import java.math.BigInteger;
 @Builder
 @ToString
 public class QuestionTypeDTOWithoutQuestions {
-    @NotNull
+    @NotNull(message = "id must be not null")
+    @Positive(message = "id must be more than zero")
     private BigInteger id;
-    @NotEmpty
+    @NotEmpty(message = "question type name must be not empty")
+    @Size(max = 1000, message = "question type name max size 1000")
     private String questionTypeName;
 
     @Override
