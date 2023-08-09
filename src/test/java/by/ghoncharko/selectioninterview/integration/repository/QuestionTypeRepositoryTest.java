@@ -26,7 +26,7 @@ class QuestionTypeRepositoryTest {
     void testFindByQuestionTypeNameAllQuestionsWithoutLazy(){
        Optional<QuestionType> questionTypeOptional = questionTypeRepository.findByQuestionTypeNameAllQuestionsWithoutLazy("Question 1");
        questionTypeOptional.ifPresent(questionType->{
-           Assertions.assertDoesNotThrow(()-> questionType.getQuestions().size()); ;
+           Assertions.assertDoesNotThrow(()-> questionType.getQuestions().size());
        });
     }
     @Test

@@ -3,6 +3,8 @@ package by.ghoncharko.selectioninterview.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -26,8 +29,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Setter
 public class Question {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id",nullable = false)
     private BigInteger id;
     @Column(name = "question_body",nullable = false,length = 5000, unique = true)
@@ -35,7 +40,7 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_type_id")
     @ToString.Exclude
-    private QuestionType questionType;
+   private QuestionType questionType;
     @OneToMany
     @JoinColumn(name = "question_id")
     @ToString.Exclude

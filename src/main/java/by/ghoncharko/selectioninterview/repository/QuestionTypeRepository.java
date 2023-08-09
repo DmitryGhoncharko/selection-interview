@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface QuestionTypeRepository extends JpaRepository<QuestionType, BigInteger> {
 
-    Optional<QuestionType> findByQuestionTypeNameIgnoreCase(String questionTypeName);
+    Optional<QuestionType> findByQuestionTypeName(String questionTypeName);
     @Query("select qt from QuestionType qt left join fetch qt.questions where qt.questionTypeName = :questionTypeName")
     Optional<QuestionType> findByQuestionTypeNameAllQuestionsWithoutLazy(@Param("questionTypeName") String questionTypeName);
 
@@ -24,5 +24,11 @@ public interface QuestionTypeRepository extends JpaRepository<QuestionType, BigI
     Page<QuestionType> findAll(Pageable pageable);
     @Query("select qt from QuestionType  qt left join fetch qt.questions")
     Page<QuestionType> findAllWithoutLazy(Pageable pageable);
+
+    void deleteById(BigInteger id);
+
+    void deleteByQuestionTypeName(String name);
+
+    Optional<QuestionType> findById(BigInteger id);
 
 }
