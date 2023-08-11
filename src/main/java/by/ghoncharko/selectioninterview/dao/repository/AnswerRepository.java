@@ -1,4 +1,4 @@
-package by.ghoncharko.selectioninterview.repository;
+package by.ghoncharko.selectioninterview.dao.repository;
 
 import by.ghoncharko.selectioninterview.entity.Answer;
 import org.springframework.data.domain.Page;

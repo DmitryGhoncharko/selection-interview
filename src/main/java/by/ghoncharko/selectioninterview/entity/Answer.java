@@ -18,6 +18,7 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -37,6 +38,12 @@ public class Answer {
     private String answerBody;
     @Column(name = "answer_correct", nullable = false)
     private Boolean answerCorrect;
+    @Column(name = "date_created", nullable = false)
+    private Timestamp dateCreated;
+    @Column(name = "last_date_updated", nullable = false)
+    private Timestamp lastDateUpdated;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean deleted;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     @ToString.Exclude

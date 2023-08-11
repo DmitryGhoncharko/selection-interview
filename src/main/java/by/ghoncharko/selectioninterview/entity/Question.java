@@ -19,6 +19,8 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +39,12 @@ public class Question {
     private BigInteger id;
     @Column(name = "question_body",nullable = false,length = 5000, unique = true)
     private String questionBody;
+    @Column(name = "date_created", nullable = false)
+    private Timestamp dateCreated;
+    @Column(name = "last_date_updated", nullable = false)
+    private Timestamp lastDateUpdated;
+    @Column(name = "is_deleted", nullable = false)
+    private boolean deleted;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_type_id")
     @ToString.Exclude
@@ -44,7 +52,7 @@ public class Question {
     @OneToMany
     @JoinColumn(name = "question_id")
     @ToString.Exclude
-    private List<Answer> answers;
+    private List<Answer> answers = new ArrayList<>();
 
     @Override
     public final boolean equals(Object o) {

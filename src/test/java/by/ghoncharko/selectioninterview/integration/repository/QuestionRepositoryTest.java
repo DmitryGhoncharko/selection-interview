@@ -1,7 +1,7 @@
 package by.ghoncharko.selectioninterview.integration.repository;
 
 import by.ghoncharko.selectioninterview.entity.Question;
-import by.ghoncharko.selectioninterview.repository.QuestionRepository;
+import by.ghoncharko.selectioninterview.dao.repository.QuestionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

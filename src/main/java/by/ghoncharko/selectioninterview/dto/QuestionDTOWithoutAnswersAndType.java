@@ -1,6 +1,5 @@
 package by.ghoncharko.selectioninterview.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -13,6 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Getter
@@ -29,6 +29,11 @@ public class QuestionDTOWithoutAnswersAndType {
     @Size(max = 5000,message = "question body max size = 5000")
     private String questionBody;
 
+    private Timestamp dateCreated;
+
+    private Timestamp lastDateUpdated;
+
+    private boolean deleted;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

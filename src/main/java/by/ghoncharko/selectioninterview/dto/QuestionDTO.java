@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,7 +22,7 @@ public class QuestionDTO {
     private BigInteger id;
     private String questionBody;
     private QuestionTypeDTO questionTypeDTO;
-    private List<AnswerDTO> answers;
+    private List<AnswerDTO> answers = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

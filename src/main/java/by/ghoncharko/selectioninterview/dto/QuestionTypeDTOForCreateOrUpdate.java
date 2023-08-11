@@ -1,5 +1,7 @@
 package by.ghoncharko.selectioninterview.dto;
 
+import by.ghoncharko.selectioninterview.validation.group.UpdateValidationGroup;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -12,26 +14,21 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.Objects;
-
+import java.util.ArrayList;
+import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
-public class QuestionTypeDTOWithoutQuestions {
-    @NotNull(message = "id must be not null")
-    @Positive(message = "id must be more than zero")
+public class QuestionTypeDTOForCreateOrUpdate {
+    @NotNull(groups = UpdateValidationGroup.class,message = "id must be not null")
+    @Positive(groups = UpdateValidationGroup.class, message = "id must be more than zero")
     private BigInteger id;
     @NotEmpty(message = "question type name must be not empty")
     @Size(max = 1000, message = "question type name max size 1000")
     private String questionTypeName;
-
-    private Timestamp dateCreated;
-
-    private Timestamp lastDateUpdated;
 
     private boolean deleted;
 
@@ -40,9 +37,9 @@ public class QuestionTypeDTOWithoutQuestions {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        QuestionTypeDTOWithoutQuestions that = (QuestionTypeDTOWithoutQuestions) o;
+        QuestionTypeDTOForCreateOrUpdate that = (QuestionTypeDTOForCreateOrUpdate) o;
 
-        return Objects.equals(id, that.id);
+        return id != null ? id.equals(that.id) : that.id == null;
     }
 
     @Override

@@ -13,6 +13,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -28,7 +30,13 @@ public class QuestionTypeDTO {
     @NotEmpty(message = "question type name must be not empty")
     @Size(max = 1000, message = "question type name max size 1000")
     private String questionTypeName;
-    private List<QuestionDTOWithoutAnswersAndType> questions;
+
+    private Timestamp dateCreated;
+
+    private Timestamp lastDateUpdated;
+
+    private boolean deleted;
+    private List<QuestionDTOWithoutAnswersAndType> questions = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
