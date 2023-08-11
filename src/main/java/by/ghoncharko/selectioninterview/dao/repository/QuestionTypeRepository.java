@@ -32,19 +32,19 @@ public interface QuestionTypeRepository extends JpaRepository<QuestionType, BigI
     @Query("select qt from QuestionType  qt left join fetch qt.questions where qt.deleted=false ")
     Page<QuestionType> findAllWithoutLazyDeletedQuestionTypeFalse(Pageable pageable);
 
-    @Query("select qt from QuestionType  qt left join fetch qt.questions where qt.deleted=false and Question.deleted=false")
+    @Query("select qt from QuestionType qt left join fetch qt.questions q where qt.deleted = false and q.deleted = false")
     Page<QuestionType> findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionFalse(Pageable pageable);
 
-    @Query("select qt from QuestionType  qt left join fetch qt.questions where qt.deleted=false and Question.deleted=true ")
+    @Query("select qt from QuestionType qt left join fetch qt.questions q where qt.deleted = false and q.deleted = true ")
     Page<QuestionType> findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionTrue(Pageable pageable);
 
     @Query("select qt from QuestionType  qt left join fetch qt.questions where qt.deleted=true")
     Page<QuestionType> findAllWithoutLazyDeletedQuestionTypeTrue(Pageable pageable);
 
-    @Query("select qt from QuestionType  qt left join fetch qt.questions where qt.deleted=true and Question.deleted=false ")
+    @Query("select qt from QuestionType qt left join fetch qt.questions q where qt.deleted = true and q.deleted = false")
     Page<QuestionType> findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsFalse(Pageable pageable);
 
-    @Query("select qt from QuestionType  qt left join fetch qt.questions where qt.deleted=true and Question.deleted=true")
+    @Query("select qt from QuestionType qt left join fetch qt.questions q where qt.deleted = true and q.deleted = true ")
     Page<QuestionType> findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsTrue(Pageable pageable);
 
     @Query("select qt from QuestionType  qt left join fetch qt.questions")

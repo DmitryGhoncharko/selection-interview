@@ -1,8 +1,8 @@
 package by.ghoncharko.selectioninterview.restcontroller;
 
 import by.ghoncharko.selectioninterview.dto.QuestionTypeDTO;
-import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOWithoutQuestions;
 import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOForCreateOrUpdate;
+import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOWithoutQuestions;
 import by.ghoncharko.selectioninterview.service.QuestionTypeService;
 import by.ghoncharko.selectioninterview.validation.group.UpdateValidationGroup;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,28 +64,34 @@ public class QuestionTypeController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @PostMapping
     public ResponseEntity<QuestionTypeDTO> createQuestionType(@RequestBody @Validated QuestionTypeDTOForCreateOrUpdate questionTypeDtoForCreateOrUpdate) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(questionTypeService.create(questionTypeDtoForCreateOrUpdate));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(questionTypeService.create(questionTypeDtoForCreateOrUpdate));
     }
 
     @PutMapping
     public ResponseEntity<QuestionTypeDTO> updateQuestionType(@RequestBody @Validated(UpdateValidationGroup.class) QuestionTypeDTOForCreateOrUpdate questionTypeDtoForCreateOrUpdate) {
         return ResponseEntity.ok(questionTypeService.update(questionTypeDtoForCreateOrUpdate));
     }
+
     @GetMapping("/find/without/questions/all/by/deleted/is/true/{page}")
-    public ResponseEntity<List<QuestionTypeDTOWithoutQuestions>> findAllByDeletedIsTrue(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize){
+    public ResponseEntity<List<QuestionTypeDTOWithoutQuestions>> findAllByDeletedIsTrue(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllByDeletedIsTrue(PageRequest.of(page, pageSize)));
     }
+
     @GetMapping("/find/without/questions/all/by/deleted/is/false/{page}")
-    public ResponseEntity<List<QuestionTypeDTOWithoutQuestions>> findAllByDeletedIsFalse(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize){
+    public ResponseEntity<List<QuestionTypeDTOWithoutQuestions>> findAllByDeletedIsFalse(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllByDeletedIsFalse(PageRequest.of(page, pageSize)));
     }
+
     @GetMapping("/find/all/by/deleted/is/false/{page}")
     public ResponseEntity<List<QuestionTypeDTO>> findAllWithoutLazyDeletedQuestionTypeFalse(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeFalse(PageRequest.of(page, pageSize)));
     }
-    @GetMapping("/find/all/by/deleted/is/false/and/deleted/question/is/false/{page}")
+
+        @GetMapping("/find/all/by/deleted/is/false/and/deleted/question/is/false/{page}")
     public ResponseEntity<List<QuestionTypeDTO>> findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionFalse(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionFalse(PageRequest.of(page, pageSize)));
     }
