@@ -4,6 +4,7 @@ import by.ghoncharko.selectioninterview.entity.QuestionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -49,10 +50,12 @@ public interface QuestionTypeRepository extends JpaRepository<QuestionType, BigI
 
     @Query("select qt from QuestionType  qt left join fetch qt.questions")
     Page<QuestionType> findAllWithoutLazy(Pageable pageable);
-
-    void deleteById(BigInteger id);
-
-    void deleteByQuestionTypeName(String name);
+    @Modifying
+    @Query("update QuestionType qt set qt.deleted = true  where qt.id=:id")
+    void deleteById(@Param("id") BigInteger id);
+    @Modifying
+    @Query("update QuestionType qt set qt.deleted = true  where qt.questionTypeName=:name")
+    void deleteByQuestionTypeName(@Param("name") String name);
 
     Optional<QuestionType> findById(BigInteger id);
 

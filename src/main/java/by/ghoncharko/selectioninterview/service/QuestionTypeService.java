@@ -41,4 +41,8 @@ public interface QuestionTypeService {
     List<QuestionTypeDTO> findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsFalse(Pageable pageable);
 
     List<QuestionTypeDTO> findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsTrue(Pageable pageable);
+
+    void deleteById(BigInteger id);
+
+    void deleteByQuestionTypeName(String name);
 }
