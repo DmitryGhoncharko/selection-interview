@@ -158,4 +158,16 @@ public class JpaHibernateQuestionTypeService implements QuestionTypeService {
         Page<QuestionType> questionTypePage = questionTypeRepository.findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsTrue(pageable);
         return questionTypeMapper.mapQuestionTypeListToQuestionTypeDtoList(questionTypePage.getContent());
     }
+
+    @Override
+    @Transactional
+    public void deleteById(BigInteger id) {
+    questionTypeRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByQuestionTypeName(String name) {
+        questionTypeRepository.deleteByQuestionTypeName(name);
+    }
 }

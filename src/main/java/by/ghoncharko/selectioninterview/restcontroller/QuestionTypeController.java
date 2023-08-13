@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,24 +92,39 @@ public class QuestionTypeController {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeFalse(PageRequest.of(page, pageSize)));
     }
 
-        @GetMapping("/find/all/by/deleted/is/false/and/deleted/question/is/false/{page}")
+    @GetMapping("/find/all/by/deleted/is/false/and/deleted/question/is/false/{page}")
     public ResponseEntity<List<QuestionTypeDTO>> findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionFalse(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionFalse(PageRequest.of(page, pageSize)));
     }
+
     @GetMapping("/find/all/by/deleted/is/false/and/deleted/question/is/true/{page}")
     public ResponseEntity<List<QuestionTypeDTO>> findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionTrue(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeFalseAndDeletedQuestionTrue(PageRequest.of(page, pageSize)));
     }
+
     @GetMapping("/find/all/by/deleted/is/true/{page}")
     public ResponseEntity<List<QuestionTypeDTO>> findAllWithoutLazyDeletedQuestionTypeTrue(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeTrue(PageRequest.of(page, pageSize)));
     }
+
     @GetMapping("/find/all/by/deleted/is/true/and/deleted/question/is/false/{page}")
     public ResponseEntity<List<QuestionTypeDTO>> findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsFalse(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsFalse(PageRequest.of(page, pageSize)));
     }
+
     @GetMapping("/find/all/by/deleted/is/true/and/deleted/question/is/true/{page}")
     public ResponseEntity<List<QuestionTypeDTO>> findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsTrue(@PathVariable int page, @RequestParam(defaultValue = "50", name = "pageSize") int pageSize) {
         return ResponseEntity.ok(questionTypeService.findAllWithoutLazyDeletedQuestionTypeTrueAndDeletedQuestionsTrue(PageRequest.of(page, pageSize)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable int id){
+        questionTypeService.deleteById(BigInteger.valueOf(id));
+        return ResponseEntity.noContent().build();
+    }
+    @DeleteMapping("/name/{name}")
+    public ResponseEntity<Void> deleteByName(@PathVariable String name){
+        questionTypeService.deleteByQuestionTypeName(name);
+        return ResponseEntity.noContent().build();
     }
 }
