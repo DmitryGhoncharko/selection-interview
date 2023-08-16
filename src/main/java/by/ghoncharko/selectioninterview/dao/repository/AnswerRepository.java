@@ -10,12 +10,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, BigInteger> {
-    @Override
+
     Page<Answer> findAll(Pageable pageable);
+
     @Query("select ans from Answer ans left join fetch ans.question")
     Page<Answer> findAllWithoutLazyQuestions(Pageable pageable);
 
@@ -25,20 +26,22 @@ public interface AnswerRepository extends JpaRepository<Answer, BigInteger> {
 
     @Query("select ans from Answer ans left join fetch ans.question where ans.deleted=true")
     Page<Answer> findAllWithoutLazyQuestionsWhereQuestionsDeletedTrue(Pageable pageable);
+
     @Query("select ans from Answer ans left join fetch ans.question where ans.deleted=false")
     Page<Answer> findAllWithoutLazyQuestionsWhereQuestionsDeletedFalse(Pageable pageable);
 
     @Query("select ans from Answer ans left join fetch ans.question where ans.deleted=true and ans.question.deleted = false ")
-    Page<Answer> findAllWithoutLazyQuestionsWhereQuestionsDeletedTrueAndQuestionDeletedFalse(Pageable pageable);
+    Page<Answer> findAllWithoutLazyQuestionsWhereAnswersDeletedTrueAndQuestionDeletedFalse(Pageable pageable);
 
     @Query("select ans from Answer ans left join fetch ans.question where ans.deleted=true and ans.question.deleted = true ")
-    Page<Answer> findAllWithoutLazyQuestionsWhereQuestionsDeletedTrueAndQuestionDeletedTrue(Pageable pageable);
+    Page<Answer> findAllWithoutLazyQuestionsWhereAnswersDeletedTrueAndQuestionDeletedTrue(Pageable pageable);
 
     @Query("select ans from Answer ans left join fetch ans.question where ans.deleted=false and ans.question.deleted = false ")
-    Page<Answer> findAllWithoutLazyQuestionsWhereQuestionsDeletedFalseAndQuestionDeletedFalse(Pageable pageable);
+    Page<Answer> findAllWithoutLazyQuestionsWhereAnswersDeletedFalseAndQuestionDeletedFalse(Pageable pageable);
 
     @Query("select ans from Answer ans left join fetch ans.question where ans.deleted=false and ans.question.deleted = true ")
-    Page<Answer> findAllWithoutLazyQuestionsWhereQuestionsDeletedFalseAndQuestionDeletedTrue(Pageable pageable);
+    Page<Answer> findAllWithoutLazyQuestionsWhereAnswersDeletedFalseAndQuestionDeletedTrue(Pageable pageable);
+
     @Modifying
     @Query("update Answer  ans set ans.deleted = true where ans.id=:id")
     void deleteAnswerById(@Param("id") BigInteger id);
@@ -47,5 +50,5 @@ public interface AnswerRepository extends JpaRepository<Answer, BigInteger> {
     @Query("update Answer  ans set ans.deleted = true where ans.answerBody=:body")
     void deleteAnswerByBody(@Param("body") String body);
 
-
+    Optional<Answer> findByAnswerBody(String body);
 }

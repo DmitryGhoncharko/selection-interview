@@ -1,5 +1,11 @@
 package by.ghoncharko.selectioninterview.exceptionhandler;
 
+import by.ghoncharko.selectioninterview.error.CannotCreateAnswerError;
+import by.ghoncharko.selectioninterview.error.CannotCreateQuestionError;
+import by.ghoncharko.selectioninterview.error.CannotCreateQuestionTypeError;
+import by.ghoncharko.selectioninterview.error.CannotDeleteAnswerError;
+import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionError;
+import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionTypeError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionTypeError;
 import jakarta.persistence.EntityNotFoundException;
@@ -122,11 +128,60 @@ public class GlobalExceptionHandler {
         log.error(errorResponse.toString());
         return errorResponse;
     }
+    @ExceptionHandler(CannotDeleteQuestionTypeError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotDeleteQuestionTypeError(CannotDeleteQuestionTypeError cannotDeleteQuestionTypeError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotDeleteQuestionTypeError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotCreateQuestionTypeError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotCreateQuestionTypeError(CannotCreateQuestionTypeError cannotCreateQuestionTypeError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotCreateQuestionTypeError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+
     @ExceptionHandler(CannotUpdateQuestionError.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse cannotUpdateQuestionError(CannotUpdateQuestionError cannotUpdateQuestionError){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.getErrors().add(cannotUpdateQuestionError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotDeleteQuestionError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotDeleteQuestionError(CannotDeleteQuestionError cannotDeleteQuestionError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotDeleteQuestionError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotCreateQuestionError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotCreateQuestionError(CannotCreateQuestionError cannotCreateQuestionError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotCreateQuestionError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotDeleteAnswerError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotDeleteAnswerError(CannotDeleteAnswerError cannotDeleteAnswerError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotDeleteAnswerError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotCreateAnswerError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotCreateAnswerError(CannotCreateAnswerError cannotCreateAnswerError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotCreateAnswerError.getMessage());
         log.error(errorResponse.toString());
         return errorResponse;
     }

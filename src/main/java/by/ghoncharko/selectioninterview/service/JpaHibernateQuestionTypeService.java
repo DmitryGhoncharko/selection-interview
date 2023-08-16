@@ -5,6 +5,8 @@ import by.ghoncharko.selectioninterview.dto.QuestionTypeDTO;
 import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOForCreateOrUpdate;
 import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOWithoutQuestions;
 import by.ghoncharko.selectioninterview.entity.QuestionType;
+import by.ghoncharko.selectioninterview.error.CannotCreateQuestionTypeError;
+import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionTypeError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionTypeError;
 import by.ghoncharko.selectioninterview.mapper.QuestionTypeMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,10 @@ public class JpaHibernateQuestionTypeService implements QuestionTypeService {
     @Override
     @Transactional
     public QuestionTypeDTO create(QuestionTypeDTOForCreateOrUpdate questionTypeDtoForCreateOrUpdate) {
+        Optional<QuestionType> questionTypeOptional = questionTypeRepository.findByQuestionTypeName(questionTypeDtoForCreateOrUpdate.getQuestionTypeName());
+        if(questionTypeOptional.isPresent()){
+            throw new CannotCreateQuestionTypeError("Cannot create question type error because question type with name " + questionTypeDtoForCreateOrUpdate.getQuestionTypeName() + " is present");
+        }
         QuestionType questionType = questionTypeMapper.questionTypeToQuestionTypeDToForCrateOrUpdate(questionTypeDtoForCreateOrUpdate);
         questionType.setDateCreated(new Timestamp(new Date().getTime()));
         questionType.setLastDateUpdated(new Timestamp(new Date().getTime()));
@@ -46,6 +52,12 @@ public class JpaHibernateQuestionTypeService implements QuestionTypeService {
         QuestionType questionType = questionTypeMapper.questionTypeToQuestionTypeDToForCrateOrUpdate(questionTypeDtoForCreateOrUpdate);
         Optional<QuestionType> questionTypeOptional = questionTypeRepository.findById(questionType.getId());
         if (questionTypeOptional.isPresent()) {
+            Optional<QuestionType> questionTypeOptionalByName = questionTypeRepository.findByQuestionTypeName(questionTypeDtoForCreateOrUpdate.getQuestionTypeName());
+            if(questionTypeOptionalByName.isPresent() && questionTypeOptionalByName.get().getQuestionTypeName().equals(questionTypeDtoForCreateOrUpdate.getQuestionTypeName()) && !questionTypeOptionalByName.get()
+                    .getId()
+                    .equals(questionTypeDtoForCreateOrUpdate.getId())){
+                throw new CannotUpdateQuestionTypeError("Cannot update question type because question type name is present in database questionTypeName = "  + questionTypeDtoForCreateOrUpdate.getQuestionTypeName());
+            }
             QuestionType questionTypeFromOptional = questionTypeOptional.get();
             questionType.setDateCreated(questionTypeFromOptional.getDateCreated());
             questionType.setLastDateUpdated(new Timestamp(new Date().getTime()));
@@ -56,7 +68,7 @@ public class JpaHibernateQuestionTypeService implements QuestionTypeService {
             }
             return questionTypeDTO;
         }
-        throw new CannotUpdateQuestionTypeError("Cannot update question type by id = " + questionType.getId()
+        throw new CannotUpdateQuestionTypeError("Cannot update question type by id because question type not present in database questionTypeId = " + questionType.getId()
                 .toString());
     }
 
@@ -162,12 +174,26 @@ public class JpaHibernateQuestionTypeService implements QuestionTypeService {
     @Override
     @Transactional
     public void deleteById(BigInteger id) {
-    questionTypeRepository.deleteById(id);
+        Optional<QuestionType> questionTypeOptional = questionTypeRepository.findById(id);
+        if(questionTypeOptional.isEmpty()){
+            throw new CannotDeleteQuestionTypeError("Cannot delete question type by id because question type not present in database questionTypeId = " + id);
+        }
+        if(questionTypeOptional.get().isDeleted()){
+            throw new CannotDeleteQuestionTypeError("Cannot delete question type by id because question type already is deleted questionTypeId = " + id);
+        }
+        questionTypeRepository.deleteById(id);
     }
 
     @Override
     @Transactional
     public void deleteByQuestionTypeName(String name) {
+        Optional<QuestionType> questionTypeOptional = questionTypeRepository.findByQuestionTypeName(name);
+        if(questionTypeOptional.isEmpty()){
+            throw new CannotDeleteQuestionTypeError("Cannot delete question type by name because question type not present in database questionTypeName = " + name);
+        }
+        if(questionTypeOptional.get().isDeleted()){
+            throw new CannotDeleteQuestionTypeError("Cannot delete question type by name because question type already is deleted questionTypeName = " + name);
+        }
         questionTypeRepository.deleteByQuestionTypeName(name);
     }
 }

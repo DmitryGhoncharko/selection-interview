@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, BigInteger> {
     Optional<Question> findByQuestionBodyIgnoreCase(String questionBody);
-
+    Optional<Question> findByQuestionBody(String questionBody);
     Page<Question> findAll(Pageable pageable);
     @Query("select qs from Question qs left join fetch qs.answers left join fetch qs.questionType")
     Page<Question> findAllWithoutLazyWithAnswersAndQuestionTypes(Pageable pageable);
