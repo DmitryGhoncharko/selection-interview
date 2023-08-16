@@ -6,10 +6,8 @@ import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOWithoutQuestions;
 import by.ghoncharko.selectioninterview.entity.QuestionType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ObjectFactory;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

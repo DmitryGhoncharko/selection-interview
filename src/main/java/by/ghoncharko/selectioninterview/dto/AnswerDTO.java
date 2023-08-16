@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -21,7 +22,13 @@ public class AnswerDTO {
     private BigInteger id;
     private String answerBody;
     private boolean answerCorrect;
+
+    private Timestamp dateCreated;
+
+    private Timestamp lastDateUpdated;
     private QuestionDTO questionDTO;
+
+    private boolean deleted;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,6 +1,5 @@
 package by.ghoncharko.selectioninterview.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +9,6 @@ import lombok.ToString;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,25 +16,24 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class QuestionDTO {
+public class AnswerDTOWithoutQuestion {
     private BigInteger id;
-    private String questionBody;
+    private String answerBody;
+    private boolean answerCorrect;
 
-    private boolean deleted;
     private Timestamp dateCreated;
 
     private Timestamp lastDateUpdated;
-    private QuestionTypeDTOWithoutQuestions questionTypeDTO;
-    private List<AnswerDTOWithoutQuestion> answers = new ArrayList<>();
 
+    private boolean deleted;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        QuestionDTO that = (QuestionDTO) o;
+        AnswerDTOWithoutQuestion answerDTO = (AnswerDTOWithoutQuestion) o;
 
-        return id != null ? id.equals(that.id) : that.id == null;
+        return id != null ? id.equals(answerDTO.id) : answerDTO.id == null;
     }
 
     @Override
@@ -45,4 +41,3 @@ public class QuestionDTO {
         return id != null ? id.hashCode() : 0;
     }
 }
-

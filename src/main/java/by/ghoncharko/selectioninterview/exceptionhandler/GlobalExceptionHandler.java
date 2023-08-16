@@ -1,5 +1,6 @@
 package by.ghoncharko.selectioninterview.exceptionhandler;
 
+import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionTypeError;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.OptimisticLockException;
@@ -118,6 +119,14 @@ public class GlobalExceptionHandler {
     public ErrorResponse cannotCreateQuestionTypeError(CannotUpdateQuestionTypeError cannotUpdateQuestionTypeError){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.getErrors().add(cannotUpdateQuestionTypeError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotUpdateQuestionError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotUpdateQuestionError(CannotUpdateQuestionError cannotUpdateQuestionError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotUpdateQuestionError.getMessage());
         log.error(errorResponse.toString());
         return errorResponse;
     }
