@@ -28,6 +28,7 @@ public class QuestionTypeDTOForCreateOrUpdate {
     private BigInteger id;
     @NotEmpty(message = "question type name must be not empty")
     @Size(max = 1000, message = "question type name max size 1000")
+    @NotEmpty(message = "question type name must be not empty")
     private String questionTypeName;
 
     private boolean deleted;

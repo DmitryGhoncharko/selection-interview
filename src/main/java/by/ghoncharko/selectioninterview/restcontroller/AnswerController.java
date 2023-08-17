@@ -5,6 +5,7 @@ import by.ghoncharko.selectioninterview.dto.AnswerDTOForCreateOrUpdate;
 import by.ghoncharko.selectioninterview.dto.AnswerDTOWithoutQuestion;
 import by.ghoncharko.selectioninterview.dto.QuestionTypeDTOForCreateOrUpdate;
 import by.ghoncharko.selectioninterview.service.AnswerService;
+import by.ghoncharko.selectioninterview.validation.group.UpdateValidationGroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -58,7 +59,7 @@ public class AnswerController {
                 .body(answerService.create(answerDTOForCreateOrUpdate));
     }
     @PutMapping
-    public ResponseEntity<AnswerDTOWithoutQuestion> update(@RequestBody @Validated AnswerDTOForCreateOrUpdate answerDTOForCreateOrUpdate){
+    public ResponseEntity<AnswerDTOWithoutQuestion> update(@RequestBody @Validated(UpdateValidationGroup.class) AnswerDTOForCreateOrUpdate answerDTOForCreateOrUpdate){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(answerService.update(answerDTOForCreateOrUpdate));
     }
