@@ -8,6 +8,9 @@ import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionError;
 import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionTypeError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionTypeError;
+import by.ghoncharko.selectioninterview.security.error.CannotRegisterUserError;
+import by.ghoncharko.selectioninterview.security.error.UserIsBannedError;
+import by.ghoncharko.selectioninterview.security.error.UserNotFoundError;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.PersistenceException;
@@ -182,6 +185,30 @@ public class GlobalExceptionHandler {
     public ErrorResponse cannotCreateAnswerError(CannotCreateAnswerError cannotCreateAnswerError){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.getErrors().add(cannotCreateAnswerError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotRegisterUserError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotRegisterUserError(CannotRegisterUserError cannotRegisterUserError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotRegisterUserError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(UserIsBannedError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse userIsBannedError(UserIsBannedError userIsBannedError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(userIsBannedError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(UserNotFoundError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse userNotFoundError(UserNotFoundError userNotFoundError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(userNotFoundError.getMessage());
         log.error(errorResponse.toString());
         return errorResponse;
     }
