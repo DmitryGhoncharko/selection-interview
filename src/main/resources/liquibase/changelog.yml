@@ -55,6 +55,34 @@ databaseChangeLog:
 
               alter table interview.answer
                   owner to interview;
+              
+              create table interview._role
+                           (
+                               role_id   bigserial
+                                   primary key,
+                               role_name varchar(300) not null
+                                   unique
+                           );
+
+                           alter table interview._role
+                               owner to interview;
+
+                           create table interview._user
+                           (
+                               user_id         bigserial
+                                   primary key,
+                               user_first_name varchar(1000) not null,
+                               user_last_name  varchar(1000) not null,
+                               user_patronymic varchar(1000) not null,
+                               user_email      varchar(2000) not null
+                                   unique,
+                               user_password   varchar(5000) not null,
+                               user_role_id    bigint        not null
+                                   constraint _user__role_role_id_fk
+                                       references interview._role
+                           );
+              alter table interview._user
+                              owner to interview;
         - sqlFile:
             dbms: postgresql
             splitStatements: true
