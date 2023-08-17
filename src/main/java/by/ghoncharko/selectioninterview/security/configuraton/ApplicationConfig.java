@@ -2,6 +2,7 @@ package by.ghoncharko.selectioninterview.security.configuraton;
 
 import by.ghoncharko.selectioninterview.dao.repository.UserRepository;
 import by.ghoncharko.selectioninterview.entity.User;
+import by.ghoncharko.selectioninterview.security.error.UserIsBannedError;
 import by.ghoncharko.selectioninterview.security.error.UserNotFoundError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class ApplicationConfig {
     private final UserRepository userRepository;
     @Bean
+    @Transactional(readOnly = true)
     public UserDetailsService userDetailsService(){
         return new UserDetailsService() {
             @Override
@@ -30,7 +33,11 @@ public class ApplicationConfig {
                if(userOptional.isEmpty()){
                    throw new UserNotFoundError("User with username " + username + " not found");
                }
-               return userOptional.get();
+               User user = userOptional.get();
+               if(user.isBanned()){
+                   throw new UserIsBannedError("User with username " + username + " was banned");
+               }
+               return user;
             }
         };
     }

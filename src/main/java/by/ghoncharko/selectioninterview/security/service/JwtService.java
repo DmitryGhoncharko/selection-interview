@@ -21,6 +21,8 @@ import java.util.function.Function;
 public class JwtService {
     @Value("${jwt.signKey}")
     private String signKey;
+    @Value("${jwt.expirationTime}")
+    private Long expirationTime;
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(),userDetails);
     }
@@ -33,7 +35,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 24 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

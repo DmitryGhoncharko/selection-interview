@@ -19,6 +19,7 @@ import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -52,8 +53,10 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "user_password", nullable = false, length = 5000)
     private String password;
-
+    @Column(name = "is_banned", nullable = false)
+    private boolean banned;
     @Override
+    @Transactional(readOnly = true)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getRoleName()));
     }
