@@ -14,7 +14,6 @@ import by.ghoncharko.selectioninterview.error.CannotDeleteAnswerError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateAnswerError;
 import by.ghoncharko.selectioninterview.mapper.AnswerMapper;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class JpaHibernateAnswerService implements AnswerService {
-    private static final AnswerMapper answerMapper = AnswerMapper.INSTANCE;
+    private static final AnswerMapper ANSWER_MAPPER = AnswerMapper.INSTANCE;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
 
@@ -39,70 +38,70 @@ public class JpaHibernateAnswerService implements AnswerService {
     @Transactional(readOnly = true)
     public List<AnswerDTOWithoutQuestion> findAll(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAll(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoWithoutQuestionList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoWithoutQuestionList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTO> findAllWithoutLazyQuestions(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllWithoutLazyQuestions(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTOWithoutQuestion> findAllByDeletedIsTrue(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllByDeletedIsTrue(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoWithoutQuestionList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoWithoutQuestionList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTOWithoutQuestion> findAllByDeletedIsFalse(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllByDeletedIsFalse(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoWithoutQuestionList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoWithoutQuestionList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTO> findAllWithoutLazyQuestionsWhereQuestionsDeletedTrue(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllWithoutLazyQuestionsWhereQuestionsDeletedTrue(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTO> findAllWithoutLazyQuestionsWhereQuestionsDeletedFalse(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllWithoutLazyQuestionsWhereQuestionsDeletedFalse(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTO> findAllWithoutLazyQuestionsWhereAnswersDeletedTrueAndQuestionDeletedFalse(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllWithoutLazyQuestionsWhereAnswersDeletedTrueAndQuestionDeletedFalse(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTO> findAllWithoutLazyQuestionsWhereAnswersDeletedTrueAndQuestionDeletedTrue(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllWithoutLazyQuestionsWhereAnswersDeletedTrueAndQuestionDeletedTrue(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTO> findAllWithoutLazyQuestionsWhereAnswersDeletedFalseAndQuestionDeletedFalse(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllWithoutLazyQuestionsWhereAnswersDeletedFalseAndQuestionDeletedFalse(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoList(answerPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnswerDTO> findAllWithoutLazyQuestionsWhereAnswersDeletedFalseAndQuestionDeletedTrue(Pageable pageable) {
         Page<Answer> answerPage = answerRepository.findAllWithoutLazyQuestionsWhereAnswersDeletedFalseAndQuestionDeletedTrue(pageable);
-        return answerMapper.mapAnswerListToAnswerDtoList(answerPage.getContent());
+        return ANSWER_MAPPER.mapAnswerListToAnswerDtoList(answerPage.getContent());
     }
 
     @Override
@@ -134,7 +133,7 @@ public class JpaHibernateAnswerService implements AnswerService {
     @Override
     @Transactional
     public AnswerDTOWithoutQuestion create(AnswerDTOForCreateOrUpdate answerDTOForCreateOrUpdate) {
-        Answer answer = answerMapper.answerDtoForCreateOrUpdateToAnswer(answerDTOForCreateOrUpdate);
+        Answer answer = ANSWER_MAPPER.answerDtoForCreateOrUpdateToAnswer(answerDTOForCreateOrUpdate);
         Optional<Question> questionOptional = questionRepository.findById(answer.getQuestion().getId());
         if (questionOptional.isEmpty()) {
             throw new CannotCreateAnswerError("Cannot create answer because question is not exist questionId = " + answer.getQuestion()
@@ -147,7 +146,7 @@ public class JpaHibernateAnswerService implements AnswerService {
         answer.setDateCreated(new Timestamp(new Date().getTime()));
         answer.setLastDateUpdated(new Timestamp(new Date().getTime()));
         Answer answerAfterSave = answerRepository.save(answer);
-        return answerMapper.answerToAnswerDtoWithoutQuestion(answerAfterSave);
+        return ANSWER_MAPPER.answerToAnswerDtoWithoutQuestion(answerAfterSave);
     }
 
     @Override
@@ -157,10 +156,10 @@ public class JpaHibernateAnswerService implements AnswerService {
         if (answerOptional.isEmpty()) {
             throw new CannotUpdateAnswerError("Cannot update answer because answer is not present in database answerId = " + answerDTOForCreateOrUpdate.getId());
         }
-        Answer answer = answerMapper.answerDtoForCreateOrUpdateToAnswer(answerDTOForCreateOrUpdate);
+        Answer answer = ANSWER_MAPPER.answerDtoForCreateOrUpdateToAnswer(answerDTOForCreateOrUpdate);
         answer.setDateCreated(answerOptional.get().getDateCreated());
         answer.setLastDateUpdated(new Timestamp(new Date().getTime()));
         Answer answerAfterSave = answerRepository.save(answer);
-        return answerMapper.answerToAnswerDtoWithoutQuestion(answerAfterSave);
+        return ANSWER_MAPPER.answerToAnswerDtoWithoutQuestion(answerAfterSave);
     }
 }

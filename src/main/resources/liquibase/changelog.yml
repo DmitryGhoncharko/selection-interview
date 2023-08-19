@@ -95,6 +95,30 @@ databaseChangeLog:
               create index idx_token_value on interview._token_blacklist (token_value);
               alter table interview._token_blacklist
                                            owner to interview;
+              create table interview.question_group
+              (
+                  group_id   bigserial
+                      primary key,
+                  group_name varchar(1000) not null
+                      unique,
+                  date_created timestamp default CURRENT_TIMESTAMP,
+                  last_date_updated timestamp default CURRENT_TIMESTAMP,
+                  is_deleted boolean default false
+              );
+
+              alter table interview.question_group
+                  owner to interview;
+              create table interview.question_to_group
+              (
+                  question_id bigint
+                      references interview.question,
+                  group_id    bigint
+                      references interview.question_group,
+                  primary key (question_id, group_id)
+              );
+
+              alter table interview.question_to_group
+                  owner to interview;
         - sqlFile:
             dbms: postgresql
             splitStatements: true

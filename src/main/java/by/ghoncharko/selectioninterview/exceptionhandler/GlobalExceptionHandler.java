@@ -2,11 +2,14 @@ package by.ghoncharko.selectioninterview.exceptionhandler;
 
 import by.ghoncharko.selectioninterview.error.CannotCreateAnswerError;
 import by.ghoncharko.selectioninterview.error.CannotCreateQuestionError;
+import by.ghoncharko.selectioninterview.error.CannotCreateQuestionGroupError;
 import by.ghoncharko.selectioninterview.error.CannotCreateQuestionTypeError;
 import by.ghoncharko.selectioninterview.error.CannotDeleteAnswerError;
 import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionError;
+import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionGroupError;
 import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionTypeError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionError;
+import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionGroupError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionTypeError;
 import by.ghoncharko.selectioninterview.security.error.CannotRegisterUserError;
 import by.ghoncharko.selectioninterview.security.error.UserIsBannedError;
@@ -209,6 +212,30 @@ public class GlobalExceptionHandler {
     public ErrorResponse userNotFoundError(UserNotFoundError userNotFoundError){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.getErrors().add(userNotFoundError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotCreateQuestionGroupError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotCreateQuestionGroupError(CannotCreateQuestionGroupError cannotCreateQuestionGroupError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotCreateQuestionGroupError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotDeleteQuestionGroupError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotDeleteQuestionGroupError(CannotDeleteQuestionGroupError cannotDeleteQuestionGroupError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotDeleteQuestionGroupError.getMessage());
+        log.error(errorResponse.toString());
+        return errorResponse;
+    }
+    @ExceptionHandler(CannotUpdateQuestionGroupError.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse cannotUpdateQuestionGroupError(CannotUpdateQuestionGroupError cannotUpdateQuestionGroupError){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.getErrors().add(cannotUpdateQuestionGroupError.getMessage());
         log.error(errorResponse.toString());
         return errorResponse;
     }

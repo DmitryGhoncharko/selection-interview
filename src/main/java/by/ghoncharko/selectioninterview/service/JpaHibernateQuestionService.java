@@ -10,7 +10,6 @@ import by.ghoncharko.selectioninterview.dto.QuestionDtoForCreateOrUpdate;
 import by.ghoncharko.selectioninterview.entity.Question;
 import by.ghoncharko.selectioninterview.entity.QuestionType;
 import by.ghoncharko.selectioninterview.error.CannotCreateQuestionError;
-import by.ghoncharko.selectioninterview.error.CannotCreateQuestionTypeError;
 import by.ghoncharko.selectioninterview.error.CannotDeleteQuestionError;
 import by.ghoncharko.selectioninterview.error.CannotUpdateQuestionError;
 import by.ghoncharko.selectioninterview.mapper.QuestionMapper;
@@ -30,7 +29,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class JpaHibernateQuestionService implements QuestionService {
-    private static final QuestionMapper questionMapper = QuestionMapper.INSTANCE;
+    private static final QuestionMapper QUESTION_MAPPER = QuestionMapper.INSTANCE;
     private final QuestionRepository questionRepository;
     private final QuestionTypeRepository questionTypeRepository;
 
@@ -38,84 +37,84 @@ public class JpaHibernateQuestionService implements QuestionService {
     @Transactional(readOnly = true)
     public Optional<QuestionDTOWithoutAnswersAndType> findByQuestionBodyIgnoreCase(String questionBody) {
         Optional<Question> questionOptional = questionRepository.findByQuestionBodyIgnoreCase(questionBody);
-        return questionOptional.map(questionMapper::questionToQuestionDtoWithoutAnswersAndType);
+        return questionOptional.map(QUESTION_MAPPER::questionToQuestionDtoWithoutAnswersAndType);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutAnswersAndType> findAll(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAll(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutAnswersAndTypeList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutAnswersAndTypeList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTO> findAllWithoutLazyWithAnswersAndQuestionTypes(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllWithoutLazyWithAnswersAndQuestionTypes(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutQuestionType> findAllWithoutLazyWithAnswers(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllWithoutLazyWithAnswers(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutQuestionTypeList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutQuestionTypeList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutAnswer> findAllWithoutLazyWithQuestionTypes(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllWithoutLazyWithQuestionTypes(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutAnswerList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutAnswerList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<QuestionDTOWithoutQuestionType> findByQuestionBodyWithoutLazyAnswers(String body) {
         Optional<Question> questionOptional = questionRepository.findByQuestionBodyWithoutLazyAnswers(body);
-        return questionOptional.map(questionMapper::questionToQuestionDtoWithoutType);
+        return questionOptional.map(QUESTION_MAPPER::questionToQuestionDtoWithoutType);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutAnswersAndType> findAllByDeletedIsFalse(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllByDeletedIsFalse(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutAnswersAndTypeList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutAnswersAndTypeList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutAnswersAndType> findAllByDeletedIsTrue(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllByDeletedIsTrue(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutAnswersAndTypeList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutAnswersAndTypeList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutQuestionType> findAllWithoutLazyWithAnswersWhereAnswersDeletedFalse(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllWithoutLazyWithAnswersWhereAnswersDeletedFalse(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutQuestionTypeList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutQuestionTypeList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutQuestionType> findAllWithoutLazyWithAnswersWhereAnswersDeletedTrue(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllWithoutLazyWithAnswersWhereAnswersDeletedTrue(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutQuestionTypeList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutQuestionTypeList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutAnswer> findAllWithoutLazyWithQuestionTypesDeletedFalse(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllWithoutLazyWithQuestionTypesDeletedFalse(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutAnswerList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutAnswerList(questionPage.getContent());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<QuestionDTOWithoutAnswer> findAllWithoutLazyWithQuestionTypesDeletedTrue(Pageable pageable) {
         Page<Question> questionPage = questionRepository.findAllWithoutLazyWithQuestionTypesDeletedTrue(pageable);
-        return questionMapper.mapQuestionListToQuestionDtoWithoutAnswerList(questionPage.getContent());
+        return QUESTION_MAPPER.mapQuestionListToQuestionDtoWithoutAnswerList(questionPage.getContent());
     }
 
     @Override
@@ -147,7 +146,7 @@ public class JpaHibernateQuestionService implements QuestionService {
     @Override
     @Transactional
     public QuestionDTO create(QuestionDtoForCreateOrUpdate questionDtoForCreateOrUpdate) {
-        Question question = questionMapper.questionDtoForCreateOrUpdateToQuestion(questionDtoForCreateOrUpdate);
+        Question question = QUESTION_MAPPER.questionDtoForCreateOrUpdateToQuestion(questionDtoForCreateOrUpdate);
         question.setDateCreated(new Timestamp(new Date().getTime()));
         question.setLastDateUpdated(new Timestamp(new Date().getTime()));
         Optional<Question> questionOptional = questionRepository.findByQuestionBody(question.getQuestionBody());
@@ -170,7 +169,7 @@ public class JpaHibernateQuestionService implements QuestionService {
             question.setQuestionType(questionType);
         }
         Question questionAfterSave = questionRepository.save(question);
-        QuestionDTO questionDTO = questionMapper.questionToQuestionDto(questionAfterSave);
+        QuestionDTO questionDTO = QUESTION_MAPPER.questionToQuestionDto(questionAfterSave);
         if (questionDTO.getAnswers() == null) {
             questionDTO.setAnswers(new ArrayList<>());
         }
@@ -180,7 +179,7 @@ public class JpaHibernateQuestionService implements QuestionService {
     @Override
     @Transactional
     public QuestionDTO update(QuestionDtoForCreateOrUpdate questionDtoForCreateOrUpdate) {
-        Question question = questionMapper.questionDtoForCreateOrUpdateToQuestion(questionDtoForCreateOrUpdate);
+        Question question = QUESTION_MAPPER.questionDtoForCreateOrUpdateToQuestion(questionDtoForCreateOrUpdate);
         Optional<Question> questionFromDatabaseOptional = questionRepository.findById(question.getId());
         if (questionFromDatabaseOptional.isPresent()) {
             Question questionFromDatabase = questionFromDatabaseOptional.get();
@@ -207,7 +206,7 @@ public class JpaHibernateQuestionService implements QuestionService {
             question.setQuestionType(questionTypeAfterSave);
         }
         Question questionAfterSave = questionRepository.save(question);
-        QuestionDTO questionDTO = questionMapper.questionToQuestionDto(questionAfterSave);
+        QuestionDTO questionDTO = QUESTION_MAPPER.questionToQuestionDto(questionAfterSave);
         if (questionDTO.getAnswers() == null) {
             questionDTO.setAnswers(new ArrayList<>());
         }
